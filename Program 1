@@ -1,0 +1,7 @@
+1)
+#include<stdio.h>
+#include<unistd.h>
+int main(){
+printf(process ID:%d\n,getlid());
+return 0;
+}
