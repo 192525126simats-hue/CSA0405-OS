@@ -1,0 +1,11 @@
+#include<stdio.h>
+int main(){
+int n,i;
+printf("enter number of proccesses:");
+scanf("%d",&n);
+for (i=1;i<=n;i++){
+printf("Executing process p%d\n",i);
+}
+printf("All proccesses executed.\n");
+}
+
