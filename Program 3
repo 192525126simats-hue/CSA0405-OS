@@ -1,0 +1,14 @@
+#include<stdio.h>
+int main(){
+int queue[5]={1,2,3};
+int front=0,rear=2;
+int i;
+printf("ready queue:\n");
+for(i=front;i<=rear;i++)
+{
+printf("p%d",queue[i]);
+}
+printf("\n");
+return 0;
+}
+  
