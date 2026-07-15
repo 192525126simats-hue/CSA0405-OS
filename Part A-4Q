@@ -1,0 +1,23 @@
+#include<stdio.h>
+#include<unistd.h>
+#include<sys/wait.h>
+int main()
+{
+pid_t pid=fork();
+if(pid<0)
+{
+printf("Fork failed!\n");
+}
+else if(pid==0)
+{
+printf("child process is running...\n");
+sleep(3);
+printf("child process completed\n");
+}
+else
+{
+wait(NULL);
+printf("parent process resumed\n");
+}
+return 0;
+}
