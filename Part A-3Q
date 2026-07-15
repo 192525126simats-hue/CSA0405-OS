@@ -1,0 +1,27 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include<sys/types.h>
+#include<sys/wait.h>
+int main()
+{
+pid_t pid=fork();
+if (pid<0)
+{
+printf("Fork failed!\n");
+return 1;
+}
+else if(pid==0)
+{
+printf("child process:Executing 'is -1' command...\n");
+execlp("1s","1s","-1",NULL);
+printf("execution failed!\n");
+exit(1);
+}
+else
+{
+wait(NULL);
+printf("parent process:child execution finished\n");
+}
+return 0;
+}
