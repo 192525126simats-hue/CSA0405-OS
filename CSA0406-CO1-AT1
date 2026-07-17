@@ -1,0 +1,75 @@
+                                                                         Name: Bhargavi G
+                                                                         Reg.No:192525126
+1)
+a)Multi process Operating System is used to allow the students to execute the programs simultaneously on  Linux Server.
+b)Responsibilities of the kernel in managing multiple user processes:
+  -> 
+c) Psuedo code:
+   START
+   Create child process
+   Display the PID's(Process ID) of parent and child
+   END IF 
+   STOP
+
+2)
+a)System calls required for File operations
+  Creating- Create() or Open()
+  Reading- read()
+  Closing- close()
+b)Purpose of two file management system calls:
+  ->Open()
+        opens a file to get file descriptor
+  ->read()
+        Reads a designated number of bytes from open file 
+
+c) Psuedo code:
+   START
+   Create a file with name
+   Display the student name
+   Display ("Student name")
+   END IF 
+   STOP
+
+
+3)
+a)The system calls required to copy the file:
+  ->open()
+  ->read()
+  ->write()
+  ->close()
+b)Purpose of System calls:
+  -> read()- transfer number of bytes from open file descriptor to memory buffer
+  -> write()- transfer number of bytes from memory buffer to open file descriptor
+c)Pseudo-code:
+  START
+  Open source file
+  COPY file
+  IF not exists THEN
+  Display "ERROR"
+  Exit
+  END IF
+
+
+
+4)
+a) fork()- creates a new child processor to duplicating calling parent proces.both processes simultaneously in 
+separate memory spaces
+exec()-replace the current process image with a new program
+b)wait()- blocks the parent process until the child process completes execution 
+c)System call sequence using fork(), exec(), and wait():
+  START 
+  pid=fork()
+  if pid<0
+  print"child process failed"
+  pid==0 then 
+  print"child process created "
+  Else if 
+  print"child process running"
+  wait()
+  THEN 
+  print"child process completed"
+  print"parent process completed"
+
+  
+
+   
