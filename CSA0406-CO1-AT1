@@ -3,7 +3,8 @@
 1)
 a)Multi process Operating System is used to allow the students to execute the programs simultaneously on  Linux Server.
 b)Responsibilities of the kernel in managing multiple user processes:
-  -> 
+  -> creates
+  -> schedules
 c) Psuedo code:
    START
    Create child process
@@ -71,5 +72,14 @@ c)System call sequence using fork(), exec(), and wait():
   print"parent process completed"
 
   
-
+5)
+a)The file Management system provides a uniform logical view by abstracting the physical properties of secondary memory
+b) open()-Translates a path string into a numerical file descriptor.
+   close()- Terminates program access to an open file,deletes the tracking record from the active Open-File Table.
+c)Psuedo code:
+  START
+  Create a File   -Open()
+  read the file    -read()
+  close the file   -close()
+  END 
    
