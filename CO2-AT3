@@ -1,0 +1,47 @@
+                                                                        Name:Bhargavi G
+                                                                        Reg.No:192525126
+1)Deadlock Debugging 
+
+Cause of Deadlock:
+P1 locks R1 and waits for R2.
+P2 locks R2 and waits for R1.
+Both processes wait for each other forever, causing circular wait (deadlock).
+Optimization:
+Lock resources in the same order for both processes (e.g., always lock R1 first, then R2).
+This removes the circular wait condition and prevents deadlock.
+
+2)CPU Utilization Problem 
+
+Cause:
+Processes repeatedly move between Ready and Waiting states.
+They spend most of the time waiting for I/O operations, so the CPU remains idle.
+System-Level Optimization:
+Improve I/O performance (use faster storage or asynchronous I/O).
+Use better CPU scheduling so another ready process runs while one waits for I/O.
+
+3)Memory Bottleneck Debugging 
+
+Cause:
+The program experiences frequent page faults, meaning memory pages are constantly moved between RAM and disk.
+Many threads increase memory usage and reduce performance.
+Optimizations:
+Reduce the number of threads or use a thread pool.
+Optimize heap memory usage by freeing unused memory and reducing large allocations.
+
+4)Starvation Debugging 
+
+Root Cause:
+P5 is in the lowest-priority queue (Q3).
+Higher-priority queues (Q1 and Q2) keep getting CPU time, so P5 never executes.
+Optimization:
+Use aging, which gradually increases the priority of waiting processes.
+This ensures every process eventually gets CPU time.
+
+5)Context-Switch Overhead Debugging 
+
+Cause:
+The time quantum is only 1 ms, while the average burst time is 2 ms.
+Frequent I/O waits and preemption cause many context switches.
+Optimizations:
+Increase the time quantum (e.g., from 1 ms to 4 ms).
+Reduce unnecessary context switches by improving I/O handling (e.g., asynchronous I/O or batching requests).
