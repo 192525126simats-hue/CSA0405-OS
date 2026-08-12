@@ -434,3 +434,150 @@ return 0;
 OUTPUT:
 Reader is reading
 Writer is writing
+
+
+                                    Exercise-13
+#include <stdio.h>
+int main()
+{
+int b[5] = {100, 500, 200, 300, 600};
+int p[4] = {212, 417, 112, 426};
+int i, j, k;
+printf("First Fit:\n");
+for(i = 0; i < 4; i++)
+{
+for(j = 0; j < 5; j++)
+{
+if(b[j] >= p[i])
+{
+printf("P%d -> B%d\n", i+1, j+1);
+b[j] -= p[i];
+break;
+}
+}
+}
+printf("\nBest Fit:\n");
+for(i = 0; i < 4; i++)
+{
+k = -1;
+for(j = 0; j < 5; j++)
+if(b[j] >= p[i] && (k == -1 || b[j] < b[k]))
+k = j;
+if(k != -1)
+{
+printf("P%d -> B%d\n", i+1, k+1);
+b[k] -= p[i];
+}
+}
+printf("\nWorst Fit:\n");
+for(i = 0; i < 4; i++)
+{
+k = -1;
+for(j = 0; j < 5; j++)
+if(b[j] >= p[i] && (k == -1 || b[j] > b[k]))
+k = j;
+if(k != -1)
+{
+printf("P%d -> B%d\n", i+1, k+1);
+b[k] -= p[i];
+}
+}
+return 0;
+}
+OUTPUT:
+First Fit:
+P1 -> B2
+P2 -> B5
+P3 -> B2
+Best Fit:
+P1 -> B4
+P3 -> B5
+Worst Fit:
+P3 -> B3
+
+
+                                Exercise-21
+#include <stdio.h>
+int main()
+{
+int b[5] = {100, 500, 200, 300, 600};
+int p[4] = {212, 417, 112, 426};
+int i, j, w;
+for(i = 0; i < 4; i++)
+{
+w = -1;
+for(j = 0; j < 5; j++)
+if(b[j] >= p[i] && (w == -1 || b[j] > b[w]))
+w = j;
+if(w != -1)
+{
+printf("Process %d -> Block %d\n", i + 1, w + 1);
+b[w] -= p[i];
+}
+else
+printf("Process %d -> Not Allocated\n", i + 1);
+}
+return 0;
+}
+OUTPUT:
+Process 1 -> Block 5
+Process 2 -> Block 2
+Process 3 -> Block 5
+Process 4 -> Not Allocated
+
+                                     Exercise-22
+#include <stdio.h>
+int main()
+{
+int b[5] = {100, 500, 200, 300, 600};
+int p[4] = {212, 417, 112, 426};
+int i, j, best;
+for(i = 0; i < 4; i++)
+{
+best = -1;
+for(j = 0; j < 5; j++)
+if(b[j] >= p[i] && (best == -1 || b[j] < b[best]))
+best = j;
+if(best != -1)
+{
+printf("Process %d -> Block %d\n", i + 1, best + 1);
+b[best] -= p[i];
+}
+else
+printf("Process %d -> Not Allocated\n", i + 1);
+}
+return 0;
+}
+OUTPUT:
+Process 1 -> Block 4
+Process 2 -> Block 2
+Process 3 -> Block 3
+Process 4 -> Block 5
+
+
+                                        Exercise-23
+#include <stdio.h>
+int main()
+{
+int b[5] = {100, 500, 200, 300, 600};
+int p[4] = {212, 417, 112, 426};
+int i, j;
+for(i = 0; i < 4; i++)
+{
+for(j = 0; j < 5; j++)
+{
+if(b[j] >= p[i])
+{
+printf("Process %d -> Block %d\n", i + 1, j + 1);
+b[j] -= p[i];
+break;
+}
+}
+}
+return 0;
+}
+OUTPUT:
+Process 1 -> Block 2
+Process 2 -> Block 5
+Process 3 -> Block 2
+Process 4 -> Not Allocated
