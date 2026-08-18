@@ -1,0 +1,207 @@
+1)#include <stdio.h>
+int main() {
+int n, f, ch, i, j, start, ok;
+printf("Enter disk size: ");
+scanf("%d", &n);
+printf("Enter file size: ");
+scanf("%d", &f);
+printf("1. Contiguous\n2. Linked\n3. Indexed\n");
+printf("Enter choice: ");
+scanf("%d", &ch);
+if (f > n) {
+printf("Allocation not possible");
+return 0;
+}
+if (ch == 1) {
+/* Contiguous */
+printf("Allocated blocks: ");
+for (i = 0; i < f; i++)
+printf("%d ", i);
+}
+else if (ch == 2) {
+/* Linked */
+printf("Allocated blocks: ");
+for (i = 0; i < f; i++)
+printf("%d ", i * 2);
+}
+else if (ch == 3) {
+/* Indexed */
+printf("Index block: 0\n");
+printf("Allocated blocks: ");
+for (i = 1; i <= f; i++)
+printf("%d ", i);
+}
+else
+printf("Invalid choice");
+return 0;
+}
+OUTPUT:
+Enter disk size: 10
+Enter file size: 4
+1. Contiguous
+2. Linked
+3. Indexed
+Enter choice: 1
+Allocated blocks: 0 1 2 3
+
+
+2)#include <stdio.h>
+int main() {
+int n, b[50], req, i, count = 0, x;
+printf("Enter number of blocks: ");
+scanf("%d", &n);
+printf("Enter bitmap: ");
+for (i = 0; i < n; i++)
+scanf("%d", &b[i]);
+printf("Enter blocks required: ");
+scanf("%d", &req);
+/* Allocation */
+for (i = 0; i < n && count < req; i++) {
+if (b[i] == 0) {
+b[i] = 1;
+count++;
+}
+}
+if (count < req)
+printf("Not enough space\n");
+else {
+printf("After allocation: ");
+for (i = 0; i < n; i++)
+printf("%d ", b[i]);
+}
+/* Deallocation */
+printf("\nEnter block to deallocate: ");
+scanf("%d", &x);
+if (x >= 0 && x < n)
+b[x] = 0;
+printf("After deallocation: ");
+for (i = 0; i < n; i++)
+printf("%d ", b[i]);
+return 0;
+}
+OUTPUT:
+Enter number of blocks: 8
+Enter bitmap: 1 0 0 1 0 1 0 0
+Enter blocks required: 2
+After allocation: 1 1 1 1 0 1 0 0
+Enter block to deallocate: 1
+After deallocation: 1 0 1 1 0 1 0 0
+
+
+3)#include <stdio.h>
+#include <stdlib.h>
+int main() {
+int a[10], n, h, i, j, t, seek = 0, cur;
+int used[10] = {0};
+printf("Enter n, head: ");
+scanf("%d%d", &n, &h);
+printf("Requests: ");
+for(i=0;i<n;i++) scanf("%d",&a[i]);
+/* FCFS */
+cur=h;
+printf("\nFCFS: ");
+for(i=0;i<n;i++) {
+seek += abs(cur-a[i]);
+cur=a[i];
+printf("%d ",cur);
+}
+printf("\nSeek=%d",seek);
+/* SSTF */
+seek=0; cur=h;
+printf("\nSSTF: ");
+for(i=0;i<n;i++) {
+int min=9999,k=0;
+for(j=0;j<n;j++)
+if(!used[j] && abs(cur-a[j])<min)
+min=abs(cur-a[j]),k=j;
+used[k]=1;
+seek+=min; cur=a[k];
+printf("%d ",cur);
+}
+printf("\nSeek=%d",seek);
+return 0;
+}
+INPUT:
+Enter n, head: 8 53
+Requests: 98 183 37 122 14 124 65 67
+OUTPUT:
+FCFS: 98 183 37 122 14 124 65 67
+Seek=640
+SSTF: 65 67 37 14 98 122 124 183
+Seek=236
+
+
+4)#include <stdio.h>
+#include <stdlib.h>
+int main() {
+int a[10], n, h, s, i, j, t, c=0, l=0, x;
+scanf("%d%d%d",&n,&h,&s);
+for(i=0;i<n;i++) scanf("%d",&a[i]);
+for(i=0;i<n-1;i++)
+for(j=i+1;j<n;j++)
+if(a[i]>a[j])
+t=a[i],a[i]=a[j],a[j]=t;
+x=h;
+printf("C-SCAN: ");
+for(i=0;i<n;i++)
+if(a[i]>=h) c+=abs(x-a[i]),x=a[i],printf("%d ",x);
+c+=s-1-x+s-1;
+x=0;
+for(i=0;i<n;i++)
+if(a[i]<h) c+=abs(x-a[i]),x=a[i],printf("%d ",x);
+x=h;
+printf("\nLOOK: ");
+for(i=0;i<n;i++)
+if(a[i]>=h) l+=abs(x-a[i]),x=a[i],printf("%d ",x);
+for(i=n-1;i>=0;i--)
+if(a[i]<h) l+=abs(x-a[i]),x=a[i],printf("%d ",x);
+printf("\nC-SCAN=%d\nLOOK=%d",c,l);
+printf("\nBest: %s",l<c?"LOOK":"C-SCAN");
+return 0;
+}
+INPUT:
+8 53 200
+98 183 37 122 14 124 65 67
+OUTPUT:
+C-SCAN: 65 67 98 122 124 183 14 37
+LOOK: 65 67 98 122 124 183 37 14
+C-SCAN=329
+LOOK=299
+Best: LOOK
+
+5)#include <stdio.h>
+#include <stdlib.h>
+int main() {
+int n, f, r, h, a[20], i, seek = 0, cur;
+printf("Enter disk size, file size: ");
+scanf("%d%d", &n, &f);
+printf("Enter number of requests: ");
+scanf("%d", &r);
+printf("Enter requests: ");
+for(i=0;i<r;i++) scanf("%d",&a[i]);
+printf("Enter head: ");
+scanf("%d",&h);
+if(f > n) {
+printf("Allocation failed");
+return 0;
+}
+printf("Allocated: ");
+for(i=0;i<f;i++) printf("%d ",i);
+cur=h;
+printf("\nSeek: ");
+for(i=0;i<r;i++) {
+seek += abs(cur-a[i]);
+cur=a[i];
+printf("%d ",cur);
+}
+printf("\nTotal seek time = %d",seek);
+return 0;
+}
+OUTPUT:
+Enter disk size, file size: 10 4
+Enter number of requests: 5
+Enter requests: 2 7 4 8 1
+Enter head: 5
+Allocated: 0 1 2 3
+Seek: 2 7 4 8 1
+Total seek time = 21
