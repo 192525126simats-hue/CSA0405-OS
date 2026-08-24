@@ -1,0 +1,217 @@
+                                                                                   Name:G.Bhargavi
+                                                                                   Reg.No:192525126
+1)Optimized Linux File System Layout – 50 GB Server
+Scenario
+A server has a total storage capacity of 50 GB. The storage is used for system files, logs, user files, and application data. 
+The main goal is to prevent logs from using more than 10 GB and avoid disk space exhaustion.
+
+oposed Partition Layout
+Partition	      Size	  Purpose
+/	              12 GB	  Operating system and system files
+/var	          10 GB	  Logs, cache, and variable data
+/home	          10 GB	  User files
+/opt	          8 GB	  Application data
+/tmp	          2 GB	  Temporary files
+swap	          4 GB	  Virtual memory
+Free space	    4 GB	  Emergency/reserve space
+Total	           50 GB	
+Storage Management
+
+1. Log Management
+The /var partition is limited to 10 GB so that log files cannot consume the entire disk.
+Use logrotate to automatically manage logs
+Example configuration:
+sudo nano /etc/logrotate.d/mylogs
+/var/log/*.log {
+    daily
+    rotate 7
+    compress
+    missingok
+    notifempty
+    maxsize 1G
+}
+
+This configuration:
+Rotates logs daily.
+Keeps 7 old log files.
+Compresses old logs.
+Rotates logs when they reach 1 GB.
+Prevents unnecessary log growth.
+
+2. Disk Space Monitoring
+Check disk usage using:
+df -h
+Check which directories use the most space:
+du -sh /var/*
+Check available space regularly:
+df -h /
+
+3. Preventing Disk Exhaustion
+The system can monitor disk usage and generate alerts when usage becomes high.
+Recommended limits:
+
+70%  → Normal
+80%  → Warning
+90%  → Critical
+95%  → Emergency action
+
+Old logs, cache files, and temporary files should be removed or compressed when required.
+
+4. Reserved Space
+Keeping 4 GB of free space provides emergency storage. This allows critical services to continue operating even 
+when other partitions become full.
+
+Conclusion
+The 50 GB disk is divided into separate partitions for the operating system, logs, user files, applications, 
+temporary files, and swap. The /var partition is limited to 10 GB, and logrotate controls log growth.
+Disk monitoring, log compression, and reserved free space help prevent disk exhaustion and maintain continuous
+operation of critical services.
+
+2)Kernel-Level Optimization for High CPU Workloads
+
+A Linux system with high CPU usage may suffer from frequent context switching, which increases scheduling overhead 
+and delays real-time tasks. Since hardware upgrades are not possible, kernel-level optimization can improve performance.
+
+1. Scheduler Tuning
+Use SCHED_FIFO or SCHED_RR for real-time processes.
+Assign higher priority to critical processes.
+Use CPU affinity to keep important processes on specific CPU cores.
+Reduce unnecessary background processes to lower context switching.
+2. Real-Time Kernel
+Use the PREEMPT_RT kernel for real-time applications.
+It reduces kernel scheduling latency and provides faster response to important tasks.
+3. Kernel Modules
+Load only the required kernel modules.
+Remove unnecessary modules to reduce kernel overhead.
+Use optimized modules for frequently used hardware and services.
+4. Monitor Performance
+Use Linux tools such as:
+
+top
+htop
+vmstat
+
+These tools help identify CPU-intensive processes and excessive context switching.
+Result
+These techniques reduce unnecessary context switches, lower scheduling delays, improve CPU utilization, and provide faster
+response for real-time applications.
+
+Conclusion: Scheduler tuning, CPU affinity, PREEMPT_RT, and optimized kernel modules can significantly improve Linux 
+performance without requiring hardware upgrades.
+
+3)Efficient Shell Script for Processing 1 Million Log Entries
+To process 1 million log entries within 2 minutes, the script should avoid unnecessary loops and process data using
+optimized Linux commands.
+
+Proposed Solution
+
+Assume the log file is server.log and we need to count ERROR entries.
+#!/bin/bash
+LOGFILE="server.log"
+grep -F "ERROR" "$LOGFILE" | wc -l
+For Multiple Operations
+#!/bin/bash
+LOGFILE="server.log"
+echo "Total Entries:"
+wc -l < "$LOGFILE"
+echo "Error Entries:"
+grep -Fc "ERROR" "$LOGFILE"
+echo "Warning Entries:"
+grep -Fc "WARNING" "$LOGFILE"
+
+Performance Optimization
+grep -F – Uses fixed-string searching, which is faster than regular expressions.
+wc -l – Efficiently counts lines without processing them individually in a shell loop.
+Pipelines (|) – Pass data directly between commands without creating unnecessary temporary files.
+Avoid while read loops – Shell loops are slow when processing 1 million records.
+Avoid awk/sed when simple grep is sufficient – Use the simplest command that performs the required operation.
+Process the file once when possible – Combining related operations reduces disk I/O.
+Example: Find Errors and Count Them
+grep -F "ERROR" server.log | wc -l
+
+Conclusion
+
+For 1 million log entries, optimized commands such as grep, wc, and pipelines are preferred over shell loops. 
+They use efficient system-level implementations and reduce CPU and disk overhead, making it possible to process 
+large log files quickly and meet the 2-minute requirement, assuming the storage hardware and log-processing 
+operation are not unusually slow.
+
+4)Process Management Strategy
+A faulty process is consuming 90% CPU. The process should be identified and controlled without restarting the system or
+affecting critical services.
+
+1. Identify the Faulty Process
+Use:
+top
+or:
+ps aux --sort=-%cpu | head
+These commands show processes using the highest CPU.
+
+2. Monitor the Process
+After finding the PID, monitor it using:
+top -p PID
+Replace PID with the actual process ID.
+
+3. Reduce CPU Priority
+First, reduce its priority instead of immediately terminating it:
+sudo renice 10 -p PID
+This allows critical services to get more CPU time.
+
+4. Limit CPU Usage
+If required, use cpulimit:
+sudo cpulimit -p PID -l 30
+This limits the process to approximately 30% CPU.
+
+5. Terminate the Process if Necessary
+If the process continues to cause problems:
+sudo kill PID
+If it does not stop:
+sudo kill -9 PID
+kill -9 should be used only as a last option.
+
+6. Verify System Performance
+Check CPU usage again:
+top
+Make sure critical services are still running.
+
+Conclusion
+The recommended strategy is:
+Identify → Monitor → Reduce Priority → Limit CPU → Terminate if Necessary → Verify
+This approach controls the faulty process without rebooting the system and helps ensure that critical services 
+continue operating normally.
+
+5)Efficient RAM Allocation for 5 Virtual Machines
+Given
+Total RAM = 16 GB
+Host OS requirement = 4 GB
+Number of VMs = 5
+Minimum RAM per VM = 2 GB
+
+Analysis
+RAM available for VMs:
+16 GB − 4 GB = 12 GB
+Minimum RAM required by 5 VMs:
+5 × 2 GB = 10 GB
+Therefore, 2 GB remains available for flexible allocation.
+
+Proposed Allocation
+System	                         RAM
+Host OS	                         4 GB
+VM1	                             2 GB
+VM2   	                         2 GB
+VM3	                             2 GB
+VM4	                             2 GB
+VM5	                             2 GB
+Available for dynamic allocation 2 GB
+Total	                           16 GB
+
+Virtualization Strategy
+Allocate 2 GB minimum to each VM.
+Keep 4 GB reserved for the host OS.
+Use dynamic memory allocation/ballooning to provide the extra 2 GB to VMs when needed.
+Give additional RAM to VMs running heavier workloads.
+Monitor memory usage regularly and avoid allocating more RAM than physically available.
+
+Conclusion
+The best strategy is to allocate 4 GB to the host and 2 GB to each of the 5 VMs, leaving 2 GB as a flexible reserve. 
+This satisfies the minimum requirements and allows resources to be dynamically adjusted when a VM needs additional memory.
