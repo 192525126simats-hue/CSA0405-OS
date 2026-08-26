@@ -1,0 +1,66 @@
+                                                                                   Name:Bhargavi G
+                                                                                   Reg.No:192525126
+Pseudo code:
+
+1)BEGIN
+SET limit = 80%
+CHECK disk usage
+IF usage > limit THEN
+FIND log files
+FOR each log file DO
+DELETE or COMPRESS file
+CHECK disc usage
+IF usage <= 80% THEN
+BREAK
+ENDIF
+ENDFOR
+ENDIF
+END
+
+2)BEGIN
+INPUT process_list
+WHILE process_list is not empty DO
+SELECT process with highest priority
+EXECUTE process
+IF process is not completed THEN
+ADD process back to list
+ENDIF
+ENDWHILE
+END
+
+3)BEGIN
+SET total_RAM = 16GB
+SET host_RAM = 4GB
+SET VM_RAM = 2GB
+available_RAM = total_RAM - host_RAM
+FOR each VM DO
+IF available_RAM >= VM_RAM THEN
+ALLOCATE 2GB to VM
+available_RAM = available_RAM - 2GB
+ELSE
+PRINT "Insufficient RAM"
+ENDIF
+ENDFOR
+END
+
+4)BEGIN
+INPUT performance, budget, hardware_access
+IF performance = HIGH AND hardware_access = TRUE THEN
+SELECT Type_1 Hypervisor
+ELSE IF budget = LOW THEN
+SELECT Type_2 Hypervisor
+ELSE
+SELECT Type_1 Hypervisor
+ENDIF
+PRINT selected_hypervisor
+END
+
+5)BEGIN
+INPUT application_list
+FOR each application DO
+CREATE resource group
+SET CPU limit
+SET memory limit
+ASSIGN application to group
+ENDFOR
+END
